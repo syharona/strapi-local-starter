@@ -323,6 +323,10 @@ export interface SectionsHero extends Schema.Component {
     description: Attribute.String & Attribute.Required;
     picture: Attribute.Media & Attribute.Required;
     buttons: Attribute.Component<'links.button-link', true>;
+    counter1: Attribute.Integer;
+    counter2: Attribute.Integer;
+    counter3: Attribute.Integer;
+    subSectionText: Attribute.Text;
   };
 }
 

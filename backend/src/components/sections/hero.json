@@ -28,6 +28,18 @@
       "type": "component",
       "repeatable": true,
       "component": "links.button-link"
+    },
+    "counter1": {
+      "type": "integer"
+    },
+    "counter2": {
+      "type": "integer"
+    },
+    "counter3": {
+      "type": "integer"
+    },
+    "subSectionText": {
+      "type": "text"
     }
   }
 }

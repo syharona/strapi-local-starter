@@ -742,7 +742,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -771,6 +770,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    wishlist: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::wishlist.wishlist'
+    >;
+    announcement_submission: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::announcement-submission.announcement-submission'
+    >;
+    interested_user: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::interest-form-submission.interest-form-submission'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -781,6 +795,174 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.user',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAnnouncementAnnouncement extends Schema.CollectionType {
+  collectionName: 'announcements';
+  info: {
+    singularName: 'announcement';
+    pluralName: 'announcements';
+    displayName: 'Announcement';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    reference: Attribute.UID &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    category: Attribute.Relation<
+      'api::announcement.announcement',
+      'manyToOne',
+      'api::category.category'
+    >;
+    Illustration: Attribute.Media &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    Prix: Attribute.BigInteger &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Attribute.SetMinMax<
+        {
+          min: '100000';
+        },
+        string
+      >;
+    Description: Attribute.Text &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    Localisation: Attribute.Enumeration<
+      [
+        'Dakar',
+        'Gu\u00E9diawaye',
+        'Pikine',
+        'Bargny',
+        'Rufisque',
+        'S\u00E9bikotane',
+        'Bambey',
+        'Diourbel',
+        'Mback\u00E9',
+        'Diofior',
+        'Fatick',
+        'Foundiougne',
+        'Sokone',
+        'Passi',
+        'Gossas',
+        'Guinguin\u00E9o',
+        'Kahone',
+        'Kaffrine',
+        'Koungheul',
+        'Kaolack',
+        'Gandiaye',
+        'Ndoffane',
+        'Nioro'
+      ]
+    > &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    chiffreAffaire: Attribute.BigInteger &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    interest_form_submission: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToOne',
+      'api::interest-form-submission.interest-form-submission'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToMany',
+      'api::announcement.announcement'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiAnnouncementSubmissionAnnouncementSubmission
+  extends Schema.CollectionType {
+  collectionName: 'announcement_submissions';
+  info: {
+    singularName: 'announcement-submission';
+    pluralName: 'announcement-submissions';
+    displayName: 'Announcement Submission';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    createDate: Attribute.Date;
+    industry: Attribute.Relation<
+      'api::announcement-submission.announcement-submission',
+      'oneToOne',
+      'api::industry.industry'
+    >;
+    price: Attribute.BigInteger;
+    motif: Attribute.Text;
+    numEmployees: Attribute.BigInteger;
+    users_permissions_user: Attribute.Relation<
+      'api::announcement-submission.announcement-submission',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::announcement-submission.announcement-submission',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::announcement-submission.announcement-submission',
       'oneToOne',
       'admin::user'
     > &
@@ -903,6 +1085,11 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'api::article.article'
     >;
     description: Attribute.Text;
+    announcements: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::announcement.announcement'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -991,6 +1178,103 @@ export interface ApiGlobalGlobal extends Schema.SingleType {
       'api::global.global'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiIndustryIndustry extends Schema.CollectionType {
+  collectionName: 'industries';
+  info: {
+    singularName: 'industry';
+    pluralName: 'industries';
+    displayName: 'Industry';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    Title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    announcement_submission: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'api::announcement-submission.announcement-submission'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::industry.industry',
+      'oneToMany',
+      'api::industry.industry'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiInterestFormSubmissionInterestFormSubmission
+  extends Schema.CollectionType {
+  collectionName: 'interest_form_submissions';
+  info: {
+    singularName: 'interest-form-submission';
+    pluralName: 'interest-form-submissions';
+    displayName: 'Interest Form Submission';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    acquereurName: Attribute.String & Attribute.Required;
+    phoneNumber: Attribute.BigInteger & Attribute.Required;
+    email: Attribute.Email;
+    appointment: Attribute.DateTime;
+    announcement: Attribute.Relation<
+      'api::interest-form-submission.interest-form-submission',
+      'oneToOne',
+      'api::announcement.announcement'
+    >;
+    users_permissions_user: Attribute.Relation<
+      'api::interest-form-submission.interest-form-submission',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::interest-form-submission.interest-form-submission',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::interest-form-submission.interest-form-submission',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1144,6 +1428,46 @@ export interface ApiProductFeatureProductFeature extends Schema.CollectionType {
   };
 }
 
+export interface ApiWishlistWishlist extends Schema.CollectionType {
+  collectionName: 'wishlists';
+  info: {
+    singularName: 'wishlist';
+    pluralName: 'wishlists';
+    displayName: 'Wishlist';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    announcements: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToMany',
+      'api::announcement.announcement'
+    >;
+    users_permissions_user: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1162,13 +1486,18 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::announcement.announcement': ApiAnnouncementAnnouncement;
+      'api::announcement-submission.announcement-submission': ApiAnnouncementSubmissionAnnouncementSubmission;
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
       'api::global.global': ApiGlobalGlobal;
+      'api::industry.industry': ApiIndustryIndustry;
+      'api::interest-form-submission.interest-form-submission': ApiInterestFormSubmissionInterestFormSubmission;
       'api::lead-form-submission.lead-form-submission': ApiLeadFormSubmissionLeadFormSubmission;
       'api::page.page': ApiPagePage;
       'api::product-feature.product-feature': ApiProductFeatureProductFeature;
+      'api::wishlist.wishlist': ApiWishlistWishlist;
     }
   }
 }
