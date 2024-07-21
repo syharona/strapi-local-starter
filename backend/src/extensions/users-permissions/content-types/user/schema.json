@@ -71,11 +71,10 @@
       "target": "api::wishlist.wishlist",
       "mappedBy": "users_permissions_user"
     },
-    "announcement_submission": {
+    "announcement_submissions": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::announcement-submission.announcement-submission",
-      "mappedBy": "users_permissions_user"
+      "relation": "oneToMany",
+      "target": "api::announcement-submission.announcement-submission"
     },
     "interested_user": {
       "type": "relation",

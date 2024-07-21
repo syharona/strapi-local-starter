@@ -29,8 +29,7 @@
     "announcement": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::announcement.announcement",
-      "inversedBy": "interest_form_submission"
+      "target": "api::announcement.announcement"
     },
     "users_permissions_user": {
       "type": "relation",

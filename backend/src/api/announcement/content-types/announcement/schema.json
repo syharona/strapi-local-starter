@@ -102,12 +102,6 @@
         }
       },
       "type": "biginteger"
-    },
-    "interest_form_submission": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::interest-form-submission.interest-form-submission",
-      "mappedBy": "announcement"
     }
   }
 }

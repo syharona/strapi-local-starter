@@ -775,9 +775,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::wishlist.wishlist'
     >;
-    announcement_submission: Attribute.Relation<
+    announcement_submissions: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToOne',
+      'oneToMany',
       'api::announcement-submission.announcement-submission'
     >;
     interested_user: Attribute.Relation<
@@ -895,11 +895,6 @@ export interface ApiAnnouncementAnnouncement extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    interest_form_submission: Attribute.Relation<
-      'api::announcement.announcement',
-      'oneToOne',
-      'api::interest-form-submission.interest-form-submission'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -947,11 +942,6 @@ export interface ApiAnnouncementSubmissionAnnouncementSubmission
     price: Attribute.BigInteger;
     motif: Attribute.Text;
     numEmployees: Attribute.BigInteger;
-    users_permissions_user: Attribute.Relation<
-      'api::announcement-submission.announcement-submission',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
