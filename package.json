@@ -12,7 +12,10 @@
     "repo:upstream": "git fetch upstream && git merge upstream/main"
   },
   "dependencies": {
+    "@strapi/provider-upload-cloudinary": "^4.25.6",
     "concurrently": "^8.2.2",
-    "npm-check-updates": "^16.14.15"
+    "npm-check-updates": "^16.14.15",
+    "pg": "^8.12.0",
+    "strapi-provider-upload-cloudinary": "^3.6.11"
   }
 }

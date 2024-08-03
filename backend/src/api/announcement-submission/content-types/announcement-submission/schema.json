@@ -21,9 +21,9 @@
     },
     "industry": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::industry.industry",
-      "inversedBy": "announcement_submission"
+      "inversedBy": "announcement_submissions"
     },
     "price": {
       "type": "biginteger"

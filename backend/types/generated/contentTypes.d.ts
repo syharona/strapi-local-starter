@@ -826,10 +826,10 @@ export interface ApiAnnouncementAnnouncement extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    category: Attribute.Relation<
+    industry: Attribute.Relation<
       'api::announcement.announcement',
       'manyToOne',
-      'api::category.category'
+      'api::industry.industry'
     >;
     Illustration: Attribute.Media &
       Attribute.Required &
@@ -936,7 +936,7 @@ export interface ApiAnnouncementSubmissionAnnouncementSubmission
     createDate: Attribute.Date;
     industry: Attribute.Relation<
       'api::announcement-submission.announcement-submission',
-      'oneToOne',
+      'manyToOne',
       'api::industry.industry'
     >;
     price: Attribute.BigInteger;
@@ -1075,11 +1075,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'api::article.article'
     >;
     description: Attribute.Text;
-    announcements: Attribute.Relation<
-      'api::category.category',
-      'oneToMany',
-      'api::announcement.announcement'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1194,10 +1189,15 @@ export interface ApiIndustryIndustry extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    announcement_submission: Attribute.Relation<
+    announcement_submissions: Attribute.Relation<
       'api::industry.industry',
-      'oneToOne',
+      'oneToMany',
       'api::announcement-submission.announcement-submission'
+    >;
+    announcements: Attribute.Relation<
+      'api::industry.industry',
+      'oneToMany',
+      'api::announcement.announcement'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
